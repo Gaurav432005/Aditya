@@ -37,7 +37,8 @@
     }
 
     #page3 {
-      background: url('/background.jpg') center/cover no-repeat fixed;
+  background: url('/background.jpg') center no-repeat fixed;
+  background-size: 400px auto;
     }
 
     h2 {
@@ -158,7 +159,7 @@
     function showPage2() {
       let inputText = document.getElementById("userInput").value.trim();
       if (!inputText) {
-        alert("Please enter some text first");
+        
         return;
       }
       
