@@ -1,186 +1,363 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>kala template</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kala Template</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Khand:wght@300;400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Khand:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    :root {
+      --primary: #FFA726;
+      --primary-dark: #F57C00;
+      --secondary: #26C6DA;
+      --bg-dark: #121212;
+      --bg-light: #1E1E1E;
+      --text-light: #FAFAFA;
+      --text-muted: #BDBDBD;
+      --highlight: #FFF176;
+    }
+    
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      
     }
     
     body {
       font-family: 'Poppins', sans-serif;
-      color: #eaeaea;
-      background-color: #1e1e1e;
+      color: var(--text-light);
+      background-color: var(--bg-dark);
       min-height: 100vh;
+      line-height: 1.6;
     }
-
+    
     .page {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px 20px;
+      padding: 2rem;
       min-height: 100vh;
       width: 100%;
+      transition: all 0.5s cubic-bezier(0.65, 0, 0.35, 1);
     }
-
-    #page1, #page2 {
-      background-color: #1e1e1e;
+    
+    #page1,
+    #page2 {
+      background-color: var(--bg-light);
     }
-
-    #page3 {
-  background: url('/background.jpg') center no-repeat fixed;
-  background-size: 400px auto;
-    }
-
+    
     h2 {
-      margin-bottom: 20px;
-      font-weight: 400;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      font-size: 1.8rem;
+      text-align: center;
     }
-
+    
     textarea {
-      width: 70vw;
+      width: 80%;
       max-width: 400px;
       min-height: 200px;
       max-height: 50vh;
-      padding: 15px;
-      border-radius: 10px;
-      border: none;
+      padding: 1rem;
+      border-radius: 12px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
       resize: vertical;
-      font-size: 16px;
-      background: rgba(255, 255, 255, 0.1);
-      color: #fff;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-light);
       outline: none;
       font-family: 'Khand', sans-serif;
-      margin-bottom: 20px;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
     }
-
+    
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(255, 167, 38, 0.2);
+    }
+    
     .word-list {
-      width: 70vw;
+      width: 100%;
+      max-width: 800px;
       text-align: center;
-      margin: 20px 0;
-      line-height: 1.6;
+      margin: 1.5rem 0;
+      line-height: 1.8;
     }
-
+    
     .word-list span {
       cursor: pointer;
-      margin: 2px;
-      padding: 5px 8px;
-      border-radius: 5px;
-      background: #444;
+      margin: 0.1rem;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
       display: inline-block;
-      font-size: 18px;
+      font-size: 1.1rem;
       transition: all 0.2s ease;
+      font-family: 'Khand', sans-serif;
     }
-
+    
     .word-list span:hover {
+      background: rgba(255, 255, 255, 0.2);
       transform: translateY(-2px);
     }
-
+    
+    .word-list span.highlighted {
+      color: var(--highlight);
+      font-weight: 500;
+    }
+    
     button {
-      margin-top: 20px;
-      padding: 12px 25px;
-      font-size: 16px;
+      margin-top: 1rem;
+      padding: 0.8rem 1.8rem;
+      font-size: 1rem;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: #000;
+    }
+    
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(230, 137, 0, 0.3);
+    }
+    
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-light);
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    .controls {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .font-size-control {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+    }
+    
+    .font-size-control button {
+      margin: 0;
+      padding: 0.3rem 0.6rem;
+      border-radius: 50%;
+      background: transparent;
+      color: var(--text-light);
+    }
+    
+    .font-size-control button:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    .font-size-display {
+      min-width: 2rem;
+      text-align: center;
+    }
+    
+    #page3 {
+      background: #000;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    #page3::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('background.jpg') center/cover no-repeat;
+      background-size: 450px auto;
+      
+      z-index: 0;
+    }
+    
+    .quote-container {
+      height: 250px;
+      width: 250px;
+      max-width: 800px;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+      animation: fadeIn 0.8s ease-out;
+      overflow: auto;
+    }
+    
+    .quote {
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: var(--text-light);
+      font-family: 'Khand', sans-serif;
+      line-height: 1.8;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+    
+    .quote .highlight {
+      color: var(--highlight);
       font-weight: 500;
     }
-
-    .btn-primary {
-      background: #ff9800;
-      color: #fff;
-    }
-
-    .btn-primary:hover {
-      background: #e68900;
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(230, 137, 0, 0.3);
-    }
-
-    .yellow {
-      color: #F2ED6B;
-      
-    }
-
-    /* Page 3 Styles */
-    .quote-container {
-      max-width: 700px;
-      padding: 40px;
-     }
-
-    .quote {
-      font-size: 1.8rem;
-      font-weight: 300;
-      text-align: center;
-      color: #fff;
-      font-family: 'Khand', sans-serif;
-      line-height: 1.6;
-      
-    }
-
+    
     /* Initially hide pages 2 and 3 */
-    #page2, #page3 {
+    #page2,
+    #page3 {
       display: none;
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      
+      50% {
+        transform: scale(1.05);
+      }
+      
+      100% {
+        transform: scale(1);
+      }
+    }
+    
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .page {
+        padding: 1.5rem;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+      
+      .quote {
+        font-size: 1.2rem;
+      }
+      
+      .word-list span {
+        font-size: 1rem;
+        padding: 0.2rem 0.4rem;
+      }
     }
   </style>
 </head>
+
 <body>
-
+  
   <div id="page1" class="page">
-    <h2>Enter Your Text</h2>
+    <h2>Enter Text </h2>
     <textarea id="userInput" placeholder="Type or paste your text here..."></textarea>
-    <button class="btn-primary" onclick="showPage2()">Next <i class="fas fa-arrow-right"></i></button>
+    <button class="btn-primary pulse" onclick="showPage2()">
+      Continue <i class="fas fa-arrow-right"></i>
+    </button>
   </div>
-
+  
   <div id="page2" class="page">
-    <h2>Click Words to Highlight</h2>
+    <h2>Highlight Words</h2>
     <div id="wordList" class="word-list"></div>
-    <button class="btn-primary" onclick="showPage3()">Apply Highlights</button>
+    
+    <div class="controls">
+      <div class="font-size-control">
+        <button onclick="adjustFontSize(-1)" title="Decrease font size">
+          <i class="fas fa-minus"></i>
+        </button>
+        <div class="font-size-display" id="fontSizeDisplay">16</div>
+        <button onclick="adjustFontSize(1)" title="Increase font size">
+          <i class="fas fa-plus"></i>
+        </button>
+      </div>
+    </div>
+    
+    <div class="controls">
+      <button class="btn-secondary" onclick="showPage1()">
+        <i class="fas fa-arrow-left"></i> Back
+      </button>
+      <button class="btn-primary" onclick="showPage3()">
+        Final Result <i class="fas fa-magic"></i>
+      </button>
+    </div>
   </div>
-
+  
   <div id="page3" class="page">
     <div class="quote-container">
       <div class="quote" id="quote-text"></div>
     </div>
   </div>
-
+  
   <script>
+    let currentFontSize = 16;
+    
     // Show page 2 with words to highlight
     function showPage2() {
-      let inputText = document.getElementById("userInput").value.trim();
+      const inputText = document.getElementById("userInput").value.trim();
       if (!inputText) {
-        
+        alert("Please enter some text first!");
         return;
       }
       
-      let wordListDiv = document.getElementById("wordList");
+      const wordListDiv = document.getElementById("wordList");
       wordListDiv.innerHTML = "";
       
       // Split by lines and words
-      let lines = inputText.split("\n");
+      const lines = inputText.split("\n");
       
       lines.forEach((line, lineIndex) => {
-        let words = line.split(/(\s+)/); // Split by whitespace but keep the spaces
+        const words = line.split(/(\s+)/); // Split by whitespace but keep the spaces
         
         words.forEach(word => {
           if (word.trim() === "") {
             // Add space
             wordListDiv.appendChild(document.createTextNode(" "));
           } else {
-            let span = document.createElement("span");
+            const span = document.createElement("span");
             span.textContent = word;
             span.onclick = function() {
-              this.classList.toggle("yellow");
+              this.classList.toggle("highlighted");
             };
             wordListDiv.appendChild(span);
           }
@@ -194,11 +371,16 @@
       
       document.getElementById("page1").style.display = "none";
       document.getElementById("page2").style.display = "flex";
+      document.getElementById("page3").style.display = "none";
+      
+      // Reset font size display
+      currentFontSize = 16;
+      document.getElementById("fontSizeDisplay").textContent = currentFontSize;
     }
     
     // Show final page with highlighted quote
     function showPage3() {
-      let wordListDiv = document.getElementById("wordList");
+      const wordListDiv = document.getElementById("wordList");
       let finalHTML = "";
       
       // Process each child node
@@ -207,24 +389,70 @@
         
         if (node.nodeName === "BR") {
           finalHTML += "<br>";
-        } 
+        }
         else if (node.nodeType === Node.TEXT_NODE) {
           finalHTML += node.textContent;
         }
         else if (node.nodeType === Node.ELEMENT_NODE) {
-          if (node.classList.contains("yellow")) {
-            finalHTML += `<span class="yellow">${node.textContent}</span>`;
+          if (node.classList.contains("highlighted")) {
+            finalHTML += `<span class="highlight">${node.textContent}</span>`;
           } else {
             finalHTML += node.textContent;
           }
         }
       }
       
-      document.getElementById("quote-text").innerHTML = finalHTML;
+      const quoteElement = document.getElementById("quote-text");
+      quoteElement.innerHTML = finalHTML;
+      quoteElement.style.fontSize = `${currentFontSize}px`;
+      
+      document.getElementById("page1").style.display = "none";
       document.getElementById("page2").style.display = "none";
       document.getElementById("page3").style.display = "flex";
     }
+    
+    // Go back to page 1
+    function showPage1() {
+      document.getElementById("page1").style.display = "flex";
+      document.getElementById("page2").style.display = "none";
+      document.getElementById("page3").style.display = "none";
+    }
+    
+    // Adjust font size
+    function adjustFontSize(change) {
+      currentFontSize = Math.max(12, Math.min(32, currentFontSize + change));
+      document.getElementById("fontSizeDisplay").textContent = currentFontSize;
+      
+      // Preview the font size change on highlighted words
+      const allWords = document.querySelectorAll('.word-list span');
+      
+      allWords.forEach(word => {
+        word.style.fontSize = `${currentFontSize}px`;
+      });
+    }
+    
+    // Add keyboard navigation (ESC to go back)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (document.getElementById("page3").style.display === "flex") {
+          showPage2();
+        } else if (document.getElementById("page2").style.display === "flex") {
+          showPage1();
+        }
+      }
+    });
+    
+    // Add animation to buttons on hover
+    document.querySelectorAll('button').forEach(button => {
+      button.addEventListener('mouseenter', () => {
+        button.style.transform = 'translateY(-2px)';
+      });
+      button.addEventListener('mouseleave', () => {
+        button.style.transform = '';
+      });
+    });
   </script>
-
+  
 </body>
+
 </html>
