@@ -332,9 +332,10 @@
       <div class="quote" id="quote-text"></div>
     </div>
   </div>
-  
-  <script>
+                    <script>
     let currentFontSize = 16;
+    let currentPage = 1; // Track current page
+    let preventBackNavigation = false;
     
     // Show page 2 with words to highlight
     function showPage2() {
@@ -376,10 +377,14 @@
       document.getElementById("page1").style.display = "none";
       document.getElementById("page2").style.display = "flex";
       document.getElementById("page3").style.display = "none";
+      currentPage = 2;
       
       // Reset font size display
       currentFontSize = 16;
       document.getElementById("fontSizeDisplay").textContent = currentFontSize;
+      
+      // Push state when navigating
+      history.pushState({ page: currentPage }, null, null);
     }
     
     // Show final page with highlighted quote
@@ -413,6 +418,10 @@
       document.getElementById("page1").style.display = "none";
       document.getElementById("page2").style.display = "none";
       document.getElementById("page3").style.display = "flex";
+      currentPage = 3;
+      
+      // Push state when navigating
+      history.pushState({ page: currentPage }, null, null);
     }
     
     // Go back to page 1
@@ -420,6 +429,22 @@
       document.getElementById("page1").style.display = "flex";
       document.getElementById("page2").style.display = "none";
       document.getElementById("page3").style.display = "none";
+      currentPage = 1;
+      
+      // Push state when navigating
+      history.pushState({ page: currentPage }, null, null);
+    }
+    
+    // Handle back button press
+    function handleBackButton() {
+      if (currentPage === 3) {
+        showPage2();
+        return true; // Prevent default
+      } else if (currentPage === 2) {
+        showPage1();
+        return true; // Prevent default
+      }
+      return false; // Allow default
     }
     
     // Adjust font size
@@ -435,27 +460,36 @@
       });
     }
     
-    // Add keyboard navigation (ESC to go back)
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        if (document.getElementById("page3").style.display === "flex") {
-          showPage2();
-        } else if (document.getElementById("page2").style.display === "flex") {
-          showPage1();
+    // Initialize the app
+    function initApp() {
+      // Add animation to buttons on hover
+      document.querySelectorAll('button').forEach(button => {
+        button.addEventListener('mouseenter', () => {
+          button.style.transform = 'translateY(-2px)';
+        });
+        button.addEventListener('mouseleave', () => {
+          button.style.transform = '';
+        });
+      });
+      
+      // Listen for popstate events (back button)
+      window.addEventListener('popstate', function(event) {
+        if (handleBackButton()) {
+          // If we handled the back navigation, push a new state
+          history.pushState({ page: currentPage }, null, null);
         }
-      }
-    });
+      });
+      
+      // Handle Android back button
+      document.addEventListener('backbutton', handleBackButton, false);
+      
+      // Push initial state
+      history.pushState({ page: currentPage }, null, null);
+    }
     
-    // Add animation to buttons on hover
-    document.querySelectorAll('button').forEach(button => {
-      button.addEventListener('mouseenter', () => {
-        button.style.transform = 'translateY(-2px)';
-      });
-      button.addEventListener('mouseleave', () => {
-        button.style.transform = '';
-      });
-    });
-  </script>
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', initApp);
+              </script>
   
 </body>
 
