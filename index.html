@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quote Highlighter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Khand:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: #eaeaea;
+      background-color: #1e1e1e;
+      min-height: 100vh;
+    }
+
+    .page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    #page1, #page2 {
+      background-color: #1e1e1e;
+    }
+
+    #page3 {
+      background: url('/background.jpg') center/cover no-repeat fixed;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-weight: 400;
+    }
+
+    textarea {
+      width: 70vw;
+      max-width: 400px;
+      min-height: 200px;
+      max-height: 50vh;
+      padding: 15px;
+      border-radius: 10px;
+      border: none;
+      resize: vertical;
+      font-size: 16px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      outline: none;
+      font-family: 'Khand', sans-serif;
+      margin-bottom: 20px;
+    }
+
+    .word-list {
+      width: 70vw;
+      text-align: center;
+      margin: 20px 0;
+      line-height: 1.6;
+    }
+
+    .word-list span {
+      cursor: pointer;
+      margin: 2px;
+      padding: 5px 8px;
+      border-radius: 5px;
+      background: #444;
+      display: inline-block;
+      font-size: 18px;
+      transition: all 0.2s ease;
+    }
+
+    .word-list span:hover {
+      transform: translateY(-2px);
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 500;
+    }
+
+    .btn-primary {
+      background: #ff9800;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #e68900;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(230, 137, 0, 0.3);
+    }
+
+    .yellow {
+      color: #F2ED6B;
+      text-shadow: 0 0 8px rgba(242, 237, 107, 0.5);
+    }
+
+    /* Page 3 Styles */
+    .quote-container {
+      max-width: 700px;
+      padding: 40px;
+     }
+
+    .quote {
+      font-size: 1.8rem;
+      font-weight: 300;
+      text-align: center;
+      color: #fff;
+      font-family: 'Khand', sans-serif;
+      line-height: 1.6;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Initially hide pages 2 and 3 */
+    #page2, #page3 {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="page1" class="page">
+    <h2>Enter Your Quote</h2>
+    <textarea id="userInput" placeholder="Type or paste your quote here..."></textarea>
+    <button class="btn-primary" onclick="showPage2()">Next <i class="fas fa-arrow-right"></i></button>
+  </div>
+
+  <div id="page2" class="page">
+    <h2>Click Words to Highlight</h2>
+    <div id="wordList" class="word-list"></div>
+    <button class="btn-primary" onclick="showPage3()">Apply Highlights</button>
+  </div>
+
+  <div id="page3" class="page">
+    <div class="quote-container">
+      <div class="quote" id="quote-text"></div>
+    </div>
+  </div>
+
+  <script>
+    // Show page 2 with words to highlight
+    function showPage2() {
+      let inputText = document.getElementById("userInput").value.trim();
+      if (!inputText) {
+        alert("Please enter some text first");
+        return;
+      }
+      
+      let wordListDiv = document.getElementById("wordList");
+      wordListDiv.innerHTML = "";
+      
+      // Split by lines and words
+      let lines = inputText.split("\n");
+      
+      lines.forEach((line, lineIndex) => {
+        let words = line.split(/(\s+)/); // Split by whitespace but keep the spaces
+        
+        words.forEach(word => {
+          if (word.trim() === "") {
+            // Add space
+            wordListDiv.appendChild(document.createTextNode(" "));
+          } else {
+            let span = document.createElement("span");
+            span.textContent = word;
+            span.onclick = function() {
+              this.classList.toggle("yellow");
+            };
+            wordListDiv.appendChild(span);
+          }
+        });
+        
+        // Add line break except after last line
+        if (lineIndex < lines.length - 1) {
+          wordListDiv.appendChild(document.createElement("br"));
+        }
+      });
+      
+      document.getElementById("page1").style.display = "none";
+      document.getElementById("page2").style.display = "flex";
+    }
+    
+    // Show final page with highlighted quote
+    function showPage3() {
+      let wordListDiv = document.getElementById("wordList");
+      let finalHTML = "";
+      
+      // Process each child node
+      for (let i = 0; i < wordListDiv.childNodes.length; i++) {
+        const node = wordListDiv.childNodes[i];
+        
+        if (node.nodeName === "BR") {
+          finalHTML += "<br>";
+        } 
+        else if (node.nodeType === Node.TEXT_NODE) {
+          finalHTML += node.textContent;
+        }
+        else if (node.nodeType === Node.ELEMENT_NODE) {
+          if (node.classList.contains("yellow")) {
+            finalHTML += `<span class="yellow">${node.textContent}</span>`;
+          } else {
+            finalHTML += node.textContent;
+          }
+        }
+      }
+      
+      document.getElementById("quote-text").innerHTML = finalHTML;
+      document.getElementById("page2").style.display = "none";
+      document.getElementById("page3").style.display = "flex";
+    }
+  </script>
+
+</body>
+</html>
